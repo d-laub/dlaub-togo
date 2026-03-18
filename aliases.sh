@@ -1,0 +1,6 @@
+alias es='exa -F --group-directories-first'
+alias el='exa -lF --group-directories-first'
+alias elg='exa -lF --group-directories-first --git'
+alias esp='exa -F --group-directories-first -d $PWD/*'
+alias bat='bat --wrap never'
+alias glowp='PAGER=bat glow --pager'
