@@ -13,9 +13,10 @@ git clone --depth 1 --branch main https://github.com/d-laub/dlaub-togo.git /tmp/
 mkdir -p ~/.oh-my-bash/themes
 cp -r /tmp/dlaub-togo-tmp/agnoster-multiline ~/.oh-my-bash/themes/
 rm -rf /tmp/dlaub-togo-tmp
-curl -fsSL https://pixi.sh/install.sh | sh
 
 # install global tools
+curl -fsSL https://pixi.sh/install.sh | sh
+source ~/.bashrc
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh
 echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
