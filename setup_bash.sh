@@ -16,7 +16,9 @@ rm -rf /tmp/dlaub-togo-tmp
 
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
-source ~/.bashrc
+# ~/.bashrc usually returns immediately when sourced from a non-interactive
+# script, so PATH updates appended by the pixi installer never run here.
+export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh
 echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
