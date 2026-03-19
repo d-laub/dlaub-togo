@@ -24,3 +24,5 @@ echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # set custom theme for oh-my-bash
 sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' ~/.bashrc
+
+echo 'Finished setting up shell environment from dlaub-togo, reload with "source ~/.bashrc" for changes to take effect.'
