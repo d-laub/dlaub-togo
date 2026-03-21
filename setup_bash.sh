@@ -9,7 +9,7 @@ pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij
 echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # install oh-my-bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
 
 # download and add aliases
 cat aliases.sh >> ~/.bash_aliases
