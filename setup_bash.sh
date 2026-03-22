@@ -6,10 +6,14 @@ set -euo pipefail
 curl -fsSL https://pixi.sh/install.sh | sh
 export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij
-echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # install oh-my-bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
+
+# all ~/.bashrc edits must be after oh-my-bash install
+
+# init zoxide
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # download and add aliases
 cat aliases.sh >> ~/.bash_aliases
