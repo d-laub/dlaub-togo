@@ -12,19 +12,19 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/mast
 
 # all ~/.bashrc edits must be after oh-my-bash install
 
-# init zoxide
-echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
-
 # download and add aliases
-cat aliases.sh >> ~/.bash_aliases
+cat aliases.sh >> "${HOME}/.bash_aliases"
 
 # set theme
-mkdir -p ~/.oh-my-bash/themes
-cp -r agnoster-multiline ~/.oh-my-bash/themes/
-sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' ~/.bashrc
+mkdir -p "${HOME}/.oh-my-bash/themes"
+cp -r agnoster-multiline "${HOME}/.oh-my-bash/themes/"
+sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
+
+# init zoxide (last: keep after any tool that rewrites ~/.bashrc)
+printf '%s\n' 'eval "$(zoxide init bash)"' >> "${HOME}/.bashrc"
 
 # config zellij
-mkdir -p ~/.config/zellij
-cp zellij_config.kdl ~/.config/zellij/config.kdl
+mkdir -p "${HOME}/.config/zellij"
+cp zellij_config.kdl "${HOME}/.config/zellij/config.kdl"
 
 echo 'Finished setting up shell environment from dlaub-togo, reload with "source ~/.bashrc" for changes to take effect.'
