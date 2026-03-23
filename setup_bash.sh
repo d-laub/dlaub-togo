@@ -2,15 +2,15 @@
 
 set -euo pipefail
 
-# install global tools
-curl -fsSL https://pixi.sh/install.sh | sh
-export PATH="${HOME}/.pixi/bin:${PATH}"
-pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij
-
 # install oh-my-bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
 
 # all ~/.bashrc edits must be after oh-my-bash install
+
+# install global tools
+curl -fsSL https://pixi.sh/install.sh | sh
+export PATH="${HOME}/.pixi/bin:${PATH}"
+pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij
 
 # download and add aliases
 cat aliases.sh >> "${HOME}/.bash_aliases"
