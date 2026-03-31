@@ -21,8 +21,9 @@ mkdir -p "${HOME}/.oh-my-bash/themes"
 cp -r agnoster-multiline "${HOME}/.oh-my-bash/themes/"
 sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
 
-# init zoxide (last: keep after any tool that rewrites ~/.bashrc)
+# update ~/.bashrc
 printf '%s\n' 'eval "$(zoxide init bash)"' >> "${HOME}/.bashrc"
+printf '%s\n' 'eval "$(dvc completion bash)"' >> "${HOME}/.bashrc"
 
 # config zellij
 mkdir -p "${HOME}/.config/zellij"
