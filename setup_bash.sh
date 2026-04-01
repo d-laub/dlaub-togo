@@ -23,7 +23,7 @@ sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
 
 # update ~/.bashrc
 printf '%s\n' 'eval "$(zoxide init bash)"' >> "${HOME}/.bashrc"
-printf '%s\n' 'eval "$(dvc completion bash)"' >> "${HOME}/.bashrc"
+printf '%s\n' 'eval "$(dvc completion -s bash)"' >> "${HOME}/.bashrc"
 
 # config zellij
 mkdir -p "${HOME}/.config/zellij"
