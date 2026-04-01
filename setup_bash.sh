@@ -10,7 +10,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/mast
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
 export PATH="${HOME}/.pixi/bin:${PATH}"
-pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc
+pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone
 pixi g a -e dvc dvc-s3
 
 # download and add aliases
