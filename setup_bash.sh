@@ -14,11 +14,15 @@ export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb
 pixi g a -e dvc dvc-s3
 
-curl -fsSL https://claude.ai/install.sh | bash
+# git
+git config --global user.email "60826163+d-laub@users.noreply.github.com"
+git config --global user.name "David Laub"
+git config --global pull.rebase true
 
+# LLM
+curl -fsSL https://claude.ai/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 rtk init --global
-
 claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
 
 # download and add aliases
