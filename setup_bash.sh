@@ -6,6 +6,7 @@ set -euo pipefail
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
 
 # all ~/.bashrc edits must be after oh-my-bash install
+export PATH="$HOME/.local/bin:$PATH"
 
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
