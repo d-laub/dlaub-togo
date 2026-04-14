@@ -13,11 +13,12 @@ export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv npm wandb
 pixi g a -e dvc dvc-s3
 
-npm install -g @google/gemini-cli
+curl -fsSL https://claude.ai/install.sh | bash
 
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 rtk init --global
-rtk init --global --gemini
+
+claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
 
 # download and add aliases
 cat aliases.sh >> "${HOME}/.bash_aliases"
