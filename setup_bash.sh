@@ -7,6 +7,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/mast
 
 # all ~/.bashrc edits must be after oh-my-bash install
 export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
