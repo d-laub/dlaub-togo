@@ -12,7 +12,7 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
 export PATH="${HOME}/.pixi/bin:${PATH}"
-pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb dust
+pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb dust nodejs
 pixi g a -e dvc dvc-s3
 
 # git
