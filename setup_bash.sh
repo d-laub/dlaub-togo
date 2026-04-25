@@ -5,9 +5,7 @@ set -euo pipefail
 # install oh-my-bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
 
-# all ~/.bashrc edits must be after oh-my-bash install
 export PATH="${HOME}/.local/bin:${PATH}"
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
@@ -38,6 +36,7 @@ cp -r agnoster-multiline "${HOME}/.oh-my-bash/themes/"
 sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
 
 # update ~/.bashrc
+printf '%s\n' 'export PATH="${HOME}/.local/bin:${PATH}"' >> "${HOME}/.bashrc"
 printf '%s\n' 'eval "$(zoxide init bash)"' >> "${HOME}/.bashrc"
 printf '%s\n' 'eval "$(dvc completion -s bash)"' >> "${HOME}/.bashrc"
 
