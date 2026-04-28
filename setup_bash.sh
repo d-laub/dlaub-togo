@@ -13,6 +13,12 @@ export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb dust nodejs commitizen
 pixi g a -e dvc dvc-s3
 
+# rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+export PATH="${HOME}/.cargo/bin:${PATH}"
+curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+cargo binstall -y cargo-update
+
 # git
 git config --global user.email "60826163+d-laub@users.noreply.github.com"
 git config --global user.name "David Laub"
@@ -27,6 +33,8 @@ claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install superpowers@claude-plugins-official
 claude plugin install code-review@claude-plugins-official
 claude plugin install feature-dev@claude-plugins-official
+cargo binstall -y tilth
+tilth install claude-code --edit
 
 # download and add aliases
 cat aliases.sh >> "${HOME}/.bash_aliases"
