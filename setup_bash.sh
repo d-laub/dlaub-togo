@@ -25,15 +25,24 @@ git config --global user.name "David Laub"
 git config --global pull.rebase true
 
 # LLM
+## rtk
 curl -fsSL https://claude.ai/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 rtk init --global
+
+## official
 claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install superpowers@claude-plugins-official
 claude plugin install code-review@claude-plugins-official
 claude plugin install feature-dev@claude-plugins-official
+
+## tilth
 cargo binstall -y tilth
 tilth install claude-code --edit
+
+## marimo
+npx -y skills add marimo-team/marimo-pair --agent claude-code --global -y
+npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --global -y
 
 # download and add aliases
 cat aliases.sh >> "${HOME}/.bash_aliases"
