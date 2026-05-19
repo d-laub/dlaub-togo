@@ -44,6 +44,9 @@ tilth install claude-code --edit
 npx -y skills add marimo-team/marimo-pair --agent claude-code --global -y
 npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --global -y
 
+## runpod
+npx -y skills add runpod/skills --agent claude-code --global -y
+
 # download and add aliases
 cat aliases.sh >> "${HOME}/.bash_aliases"
 
