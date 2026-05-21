@@ -33,8 +33,6 @@ rtk init --global
 ## official
 claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install superpowers@claude-plugins-official
-claude plugin install code-review@claude-plugins-official
-claude plugin install feature-dev@claude-plugins-official
 
 ## tilth
 cargo binstall -y tilth
