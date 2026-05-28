@@ -13,11 +13,13 @@ export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb dust nodejs commitizen
 pixi g a -e dvc dvc-s3
 
-# rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# rust (-y so it works in non-TTY contexts like docker build)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export PATH="${HOME}/.cargo/bin:${PATH}"
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-cargo binstall -y cargo-update
+# cargo-update is best-effort: binstall hits GH rate limits on cold CI runs,
+# and the source-build fallback needs openssl-sys system deps. Retry on a live shell.
+cargo binstall -y cargo-update || echo "WARN: cargo-update install skipped (binstall fetch failed)"
 
 # git
 git config --global user.email "60826163+d-laub@users.noreply.github.com"
@@ -65,7 +67,7 @@ cp -r agnoster-multiline "${HOME}/.oh-my-bash/themes/"
 sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
 
 # update ~/.bashrc
-printf '%s\n' 'export PATH="${HOME}/.local/bin:${PATH}"' >> "${HOME}/.bashrc"
+printf '%s\n' 'export PATH="${HOME}/.local/bin:${HOME}/.pixi/bin:${HOME}/.cargo/bin:${PATH}"' >> "${HOME}/.bashrc"
 printf '%s\n' 'eval "$(zoxide init bash)"' >> "${HOME}/.bashrc"
 printf '%s\n' 'eval "$(dvc completion -s bash)"' >> "${HOME}/.bashrc"
 
