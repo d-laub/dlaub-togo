@@ -30,6 +30,8 @@ git config --global pull.rebase true
 ## rtk
 curl -fsSL https://claude.ai/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+mkdir -p "${HOME}/.claude"
+printf '%s\n' 'When using superpowers:subagent-driven-development, always use Sonnet for implementation tasks.' > "${HOME}/.claude/CLAUDE.md"
 rtk init --global
 
 ## official
