@@ -60,6 +60,9 @@ class ScoreFn(Protocol):
 class TrainContext:
     fabric: L.Fabric
     model: nn.Module  # fabric.setup'd
+    # The project config from build_spec()'s ExperimentSpec. This is where
+    # train_fn reads its hyperparameters (lr, weight decay, etc.).
+    cfg: dict[str, Any]
     train_loader: DataLoader[Any]
     val_loaders: dict[str, DataLoader[Any]]
     budget_sec: float
@@ -265,6 +268,7 @@ def run_experiment(
         ctx = TrainContext(
             fabric=fabric,
             model=model,
+            cfg=spec.cfg,
             train_loader=train_loader,
             val_loaders=val_loaders,
             budget_sec=budget_min * 60.0,

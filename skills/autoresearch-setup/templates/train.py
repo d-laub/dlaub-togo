@@ -25,6 +25,13 @@ def build_spec() -> ExperimentSpec:
     cfg: dict[str, Any] = {
         # TODO(autoresearch): your config knobs (window size, encoding, etc.)
         "d_model": 128,
+        # Training hyperparameters — the single source of truth. train_fn reads
+        # these back via ctx.cfg, so tune a variant by editing these values.
+        "peak_lr": 5e-4,
+        "weight_decay": 0.06,
+        "grad_clip": 1.0,
+        "val_every": 50,
+        "batch_size": 2**13,
     }
     max_items = 2**13  # TODO(autoresearch): the fixed per-batch item budget
 
@@ -62,23 +69,28 @@ def _train_fn(ctx: TrainContext) -> TrainResult:
     # NO torch.compile — under a short fixed budget, trace + autotune burns the
     # whole budget every run. Use pre-tuned kernels from kernels.py instead.
 
-    peak_lr = 5e-4
+    # Read hyperparameters from ctx.cfg — the documented channel. cfg is the
+    # dict you returned from build_spec()'s ExperimentSpec; the harness threads
+    # it through to here. Sensible .get(..., default) fallbacks keep it robust.
+    peak_lr = ctx.cfg.get("peak_lr", 5e-4)
+    weight_decay = ctx.cfg.get("weight_decay", 0.06)
+    grad_clip_val = ctx.cfg.get("grad_clip", 1.0)
     optimizer = AdamW(
         model.parameters(),
         lr=peak_lr,
         betas=(0.9, 0.95),
         eps=1e-7,
-        weight_decay=0.06,
+        weight_decay=weight_decay,
     )
     optimizer = fabric.setup_optimizers(optimizer)
-    grad_clip_val = 1.0
 
     # If the project uses variable batch sizes (a packing sampler), a step-based
     # scheduler is wrong — schedule in item-units instead. See program.md
     # ("LR scheduling + packing sampler") for the item-unit cosine-LR pattern.
 
     num_steps = 0
-    val_every = 50  # TODO(autoresearch): periodic-validation cadence in steps
+    # Periodic-validation cadence in steps — also read from ctx.cfg.
+    val_every = ctx.cfg.get("val_every", 50)
     t0 = time.monotonic()
     stop = False
 

@@ -20,7 +20,7 @@ The harness's `run_experiment(spec)` consumes every field.
 
 | Field | Type | Meaning |
 |---|---|---|
-| `cfg` | `dict[str, Any]` | Free-form project config. Feature flags, architecture knobs, window size, encoding strategy — anything `train.py` wants threaded into the harness data builders (`build_train_dataloader(cfg)` / `build_val_dataloaders(cfg)`) and read back inside `train_fn`. The harness does not interpret it beyond passing it to the builders. |
+| `cfg` | `dict[str, Any]` | Free-form project config. Feature flags, architecture knobs, window size, encoding strategy — anything `train.py` wants threaded into the harness data builders (`build_train_dataloader(cfg)` / `build_val_dataloaders(cfg)`) and read back inside `train_fn`. The harness does not interpret it beyond passing it to the builders and onto the `TrainContext` (where `train_fn` reads it via `ctx.cfg`). |
 | `max_items` | `int` | Fixed per-batch item budget (e.g. for a packing sampler). Held constant for comparability. |
 | `model` | `nn.Module` | Your model. The harness introspects it: `num_params_M` = `sum(p.numel())/1e6`, and `depth` via `_introspect_depth` (reads `model.n_layers` if you set it, else counts `nn.TransformerEncoderLayer`s). It is `fabric.setup`'d before `train_fn` runs. |
 | `train_fn` | `TrainFn` = `Callable[[TrainContext], TrainResult]` | Your training loop. |
@@ -41,6 +41,7 @@ already wired to the accelerator (model and loaders are `fabric.setup`'d).
 |---|---|---|
 | `fabric` | `L.Fabric` | `fabric.backward(loss)`, `fabric.clip_gradients(model, optimizer, max_norm=...)`, `fabric.setup_optimizers(optimizer)`, `fabric.device`. Do **not** call `fabric.setup` on the model again — it is already set up. |
 | `model` | `nn.Module` | The `fabric.setup`'d model. Train it. |
+| `cfg` | `dict[str, Any]` | The same `cfg` dict you returned from `build_spec()` in `ExperimentSpec`; read your training hyperparameters (lr, weight decay, etc.) from here — this is the documented channel, do **not** stash config on the model. |
 | `train_loader` | `DataLoader` | The fixed train loader the harness built from `cfg`. Iterate it. |
 | `val_loaders` | `dict[str, DataLoader]` | Keyed by val "kind". One key must be `PRIMARY_VAL_KIND`. You normally do not iterate these directly — `score` does. |
 | `budget_sec` | `float` | Wall-clock budget (`budget_min * 60`). You **must** respect it: check `time.monotonic() - t0 >= ctx.budget_sec` and stop. |
