@@ -21,7 +21,7 @@ The harness's `run_experiment(spec)` consumes every field.
 | Field | Type | Meaning |
 |---|---|---|
 | `cfg` | `dict[str, Any]` | Free-form project config. Feature flags, architecture knobs, window size, encoding strategy — anything `train.py` wants threaded into the harness data builders (`build_train_dataloader(cfg)` / `build_val_dataloaders(cfg)`) and read back inside `train_fn`. The harness does not interpret it beyond passing it to the builders and onto the `TrainContext` (where `train_fn` reads it via `ctx.cfg`). |
-| `max_items` | `int` | Fixed per-batch item budget (e.g. for a packing sampler). Held constant for comparability. |
+| `max_items` | `int` | Fixed per-batch item budget (e.g. for a packing sampler), held constant for comparability. **Available on the spec for the copier's data builders to use** — the generic harness exposes it but the stub builders take only `cfg`, so `run_experiment` never reads `max_items` itself. Wire `spec.max_items` into your builders if they need it. |
 | `model` | `nn.Module` | Your model. The harness introspects it: `num_params_M` = `sum(p.numel())/1e6`, and `depth` via `_introspect_depth` (reads `model.n_layers` if you set it, else counts `nn.TransformerEncoderLayer`s). It is `fabric.setup`'d before `train_fn` runs. |
 | `train_fn` | `TrainFn` = `Callable[[TrainContext], TrainResult]` | Your training loop. |
 | `eval_forward` | `EvalForward` = `Callable[[nn.Module, dict[str, Any]], torch.Tensor]` | Forward pass used by the harness scorer. See shape contract below. |
@@ -58,8 +58,10 @@ score.best(kind: str) -> float                 # current running best (max) for 
 Calling `score(kind, model)` iterates `val_loaders[kind]`, calls
 `spec.eval_forward(model, batch)` per batch, computes the project metric, returns
 the scalar, updates the harness-owned running **max** for that kind, and logs
-`val_metric/<kind>` to the recorder. It saves/restores `model.training`, so you
-don't need to toggle `eval()`/`train()` around it.
+it to the recorder: the **primary** kind (`PRIMARY_VAL_KIND`) under the bare
+name `val_metric` (so it gets dynamics' canonical ordering + `— PRIMARY`
+legend), any other kind under `val_metric/<kind>`. It saves/restores
+`model.training`, so you don't need to toggle `eval()`/`train()` around it.
 
 ---
 
@@ -137,7 +139,11 @@ batching, extra `recorder.log` series) is yours.
 ## Dynamics CSV format (`run_dynamics.csv`)
 
 `run_experiment` flushes the recorder to `run_dynamics.csv` in a `finally` block
-(so it survives crashes — partial series are still written). Two-tier file:
+(so it survives crashes — partial series are still written). When launched by the
+batch launcher it writes to `<AUTORES_RUN_DIR>/run_dynamics.csv` — the variant's
+own log dir (`logs/v{k}/`, next to its `run.log`) — so parallel variants sharing a
+cwd don't clobber each other. A standalone single run (no `AUTORES_RUN_DIR` in the
+env) writes `run_dynamics.csv` in the cwd. Two-tier file:
 
 ### Header (snapshot tier — read by eye)
 
@@ -159,8 +165,10 @@ batching, extra `recorder.log` series) is yours.
 
 A wide CSV: one row per step (sorted union of all series' step indices), one
 column per series in canonical-then-first-logged order (`step,train_loss,
-val_metric,lr,grad_norm,...`). A cell is empty where that series wasn't logged at
-that step (sparse series like `val_metric/*` have mostly-empty columns).
+val_metric,lr,grad_norm,...`). The primary val kind is logged under the bare
+name `val_metric`; any non-primary kind is logged under `val_metric/<kind>`. A
+cell is empty where that series wasn't logged at that step (sparse eval series
+like `val_metric` and `val_metric/*` have mostly-empty columns).
 
 ### Reading it
 
@@ -181,7 +189,10 @@ that step (sparse series like `val_metric/*` have mostly-empty columns).
 
   `.per_entity()` returns `None` when no `dynamics_per_entity.parquet` sits next
   to the CSV; projects that emit per-gene/per-class breakdowns (cis writes a
-  per-gene parquet) populate it.
+  per-gene parquet) populate it. **The generic templates do not emit
+  `dynamics_per_entity.parquet`** — only `RunDynamics.per_entity()` reads it, and
+  nothing in the generic harness/train writes it. Wire a writer into your harness
+  if you want per-entity breakdowns.
 
 ---
 

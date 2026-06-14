@@ -84,12 +84,17 @@ TrainFn = Callable[[TrainContext], TrainResult]
 class ExperimentSpec:
     """The contract returned by `train.build_spec()`.
 
-    The harness builds dataloaders from `cfg` + `max_items`, computes
-    `num_params_M` + `depth` by introspecting `model`, runs `train_fn` with a
-    `TrainContext`, and reads `score.best(kind)` after.
+    The harness builds dataloaders from `cfg`, computes `num_params_M` +
+    `depth` by introspecting `model`, runs `train_fn` with a `TrainContext`,
+    and reads `score.best(kind)` after.
 
     `cfg` is a free-form project config dict (feature flags, architecture
     knobs, anything train.py wants to thread through to the data builders).
+
+    `max_items` is available on the spec for the copier's data builders to use
+    (e.g. a per-batch item budget for a packing sampler), held constant for
+    comparability. The generic harness exposes it but the stub builders take
+    only `cfg`; wire `spec.max_items` into your builders if they need it.
     """
 
     cfg: dict[str, Any]
@@ -209,7 +214,15 @@ def _make_score_fn(
                     del preds  # replace with metric accumulation
             val = _compute_metric_stub()
             best[kind] = update_best(best[kind], val)
-            recorder.log(f"val_metric/{kind}", val, step=recorder.last_step())
+            # The primary kind is logged under the bare name `val_metric` so it
+            # picks up dynamics' CANONICAL_ORDER + the `— PRIMARY` legend and
+            # matches the `val_metric` summary key; other kinds get a suffix.
+            series_name = (
+                "val_metric"
+                if kind == PRIMARY_VAL_KIND
+                else f"val_metric/{kind}"
+            )
+            recorder.log(series_name, val, step=recorder.last_step())
             if was_training:
                 model.train()
             return val
@@ -282,8 +295,18 @@ def run_experiment(
     except Exception as exc:  # noqa: BLE001
         crashed, crash_reason = True, f"{type(exc).__name__}: {exc}"
     finally:
+        # Each parallel variant runs with the same cwd (the launcher's HERE), so
+        # a relative "run_dynamics.csv" would collide. The launcher sets
+        # AUTORES_RUN_DIR to the variant's own log dir; write there. A standalone
+        # single run (no launcher) falls back to cwd.
+        run_dir = os.environ.get("AUTORES_RUN_DIR")
+        dynamics_path = (
+            os.path.join(run_dir, "run_dynamics.csv")
+            if run_dir
+            else "run_dynamics.csv"
+        )
         write_dynamics_csv(
-            "run_dynamics.csv",
+            dynamics_path,
             series=recorder.snapshot(),
             meta={
                 "num_steps": str(result.num_steps),

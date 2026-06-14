@@ -112,7 +112,10 @@ fixed-size batches.)
 ## Dynamics log format + two-tier read
 
 Each variant writes a full-resolution `run_dynamics.csv` (no downsampling) into its
-log dir. Read it in two tiers:
+own log dir (`logs/v{k}/run_dynamics.csv`, next to its `run.log` — the launcher
+sets `AUTORES_RUN_DIR` so parallel variants don't clobber a shared file; a
+standalone run with no launcher writes `run_dynamics.csv` in the cwd). Read it in
+two tiers:
 
 **Snapshot tier (read by eye).** The `#`-comment header:
 - `# [meta]` — `num_steps`, `crashed`, `budget_sec` (diagnostics may add more).
@@ -138,6 +141,8 @@ rd.per_entity()  # pl.DataFrame|None — optional per-entity parquet sibling
 
 If the harness writes a per-entity breakdown, it lands in a
 `dynamics_per_entity.parquet` sibling referenced from a `# [per-entity]` header line.
+The generic templates do **not** emit this parquet — `rd.per_entity()` returns
+`None` unless you wire a writer into your harness for per-entity breakdowns.
 
 ## Output / summary format
 

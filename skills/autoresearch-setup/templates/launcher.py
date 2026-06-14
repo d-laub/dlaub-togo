@@ -131,6 +131,9 @@ class LocalMultiGPU:
             **os.environ,
             "AUTORES_BUDGET_MIN": str(budget_min),
             "AUTORES_VARIANT": str(variant_idx),
+            # The harness writes run_dynamics.csv here, next to run.log, so
+            # parallel variants don't clobber a shared file.
+            "AUTORES_RUN_DIR": str(log_path.parent),
             "CUDA_VISIBLE_DEVICES": str(variant_idx),
         }
         log_fh = log_path.open("wb")
@@ -185,6 +188,7 @@ class Sbatch:
 cd {HERE}
 export AUTORES_BUDGET_MIN={budget_min}
 export AUTORES_VARIANT={variant_idx}
+export AUTORES_RUN_DIR={log_path.parent}
 exec {run_cmd}
 """
 
