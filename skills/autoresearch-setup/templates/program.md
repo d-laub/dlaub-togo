@@ -175,6 +175,63 @@ The launcher appends one row per variant per batch. `status` is one of `keep`,
 `discard`, or `crash` (a `parse_error` is also possible if the summary is
 unreadable). Do NOT hand-edit `results.tsv` — the launcher owns it.
 
+## Batch subagent contract
+
+The main session is the **orchestrator**: it forms hypotheses and dispatches one
+**batch subagent** (via the Agent tool) per iteration. The batch subagent owns
+everything file-heavy — reading `train.py`, writing variants, launching, waiting,
+reading logs + dynamics, appending to `findings.md` — and returns only a compact
+summary. The orchestrator never reads a log file or writes variant code, so its
+context grows ~150 tokens per batch instead of accumulating every run's output.
+
+### Briefing (orchestrator → batch subagent)
+
+Pass this as the Agent-tool prompt, filling the angle-bracket fields:
+
+```
+Batch {{N}} | current best: {{metric}} ({{commit}})
+Hypothesis: <your hypothesis for this batch>
+Variants: <brief description of the ladder or N distinct ideas>
+
+1. Read findings.md and train.py for context.
+2. Write train_0.py .. train_{{N-1}}.py implementing the hypothesis. Give each a
+   one-line module docstring (it becomes the results.tsv description). Do NOT
+   `git add` them — the launcher deletes them at end-of-batch.
+3. Run: {{run_command}}  (redirect everything; do NOT use `tee`)
+4. Read results.tsv and each variant's run_dynamics.csv snapshot header. If
+   dynamics look anomalous (loss spike, plateau, grad blow-up, OOM crash),
+   dispatch a dynamics-analyst sub-agent with the variant path and your specific
+   question.
+5. Append findings to findings.md: confirmed wins, dead ends, dynamics
+   observations, updated noise-floor evidence if relevant, open ideas.
+6. Return the compact summary below — nothing else.
+```
+
+The batch subagent must obey the same anti-cheat rules as the orchestrator: no
+editing `harness.py`/`launcher.py`/`dynamics.py`, no val leakage, no
+`torch.compile`. Restate them in the briefing if the subagent has no other access
+to this program.md.
+
+### Compact summary (batch subagent → orchestrator)
+
+The subagent returns exactly this block and nothing else:
+
+```
+batch: N
+winner: vK | metric: X.XXX | delta: +/-X.XXX vs prior best | status: keep/discard/none
+variants:
+  v0: <docstring> → X.XXX | keep/discard/crash
+  v1: <docstring> → X.XXX | keep/discard/crash
+dynamics: <one line per variant — convergence, anomalies, plateaus, notable series>
+findings_appended: yes
+```
+
+- `delta` is relative to the running best at the **start** of this batch.
+- `status: none` means no variant beat the running best — that is data, not a
+  failure.
+- A crashed variant is `status: crash` with metric `nan`; note the failure mode
+  in the `dynamics` line.
+
 ## The experiment loop
 
 LOOP FOREVER:
