@@ -65,6 +65,24 @@ worked harnesses (cis full parallel; trans minimal single-run).
 Hand off to the project's filled-in `program.md` — the autonomous experiment-loop
 manual.
 
+## Subagent model
+
+An autoresearch run can iterate for hours. To keep the main session's context flat
+over a long run, the loop is split:
+
+- **Main orchestrator** — the long-lived session. Reads `findings.md` once at
+  setup, forms hypotheses, dispatches one batch subagent per iteration, and
+  accumulates only the compact summaries each returns. It never reads log files,
+  writes variant code, or touches dynamics CSVs. Context grows ~150 tokens/batch.
+- **Batch subagent** — one per iteration, discarded after it returns. Owns variant
+  writing, launch, wait, result + dynamics reading, and the `findings.md` append.
+  Returns the compact summary and exits.
+- **Dynamics-analyst subagent** — dispatched on-demand from *within* the batch
+  subagent when a variant's dynamics look anomalous. Unchanged.
+
+See the project's `program.md` ("Batch subagent contract") for the briefing format
+and the compact-summary schema.
+
 ## Anti-cheat discipline
 
 > [!WARNING]
