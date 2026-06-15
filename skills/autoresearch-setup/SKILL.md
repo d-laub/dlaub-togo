@@ -137,3 +137,5 @@ lives in the harness.
 | Logging only a final number | Use the two-tier `dynamics.py` recorder (snapshot header + wide body) |
 | Editing `launcher.py` to manufacture a win | Launcher is FIXED; relaxing keep/discard or the parse is cheating |
 | "Deriving" held-out targets in train.py | Leakage. Touch the held-out set only via `ctx.score(...)` |
+| Reading log files or dynamics CSVs in the main orchestrator loop | Delegate to the batch subagent; the main context should only ever see compact summaries |
+| Batch subagent returning raw log excerpts in its summary | The summary must match the compact schema — one line per variant plus one dynamics line per variant, nothing else |
