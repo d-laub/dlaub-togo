@@ -236,35 +236,37 @@ findings_appended: yes
 
 LOOP FOREVER:
 
-1. **Read `findings.md`** + the git state (branch / tip / `tail results.tsv`) so you
-   know the current best and what's already been tried.
-2. **Form a hypothesis.** One idea per variant; make the N variants span the
-   hypothesis (e.g. a ladder over one knob, or N distinct ideas).
-3. **Author N variants** `train_0.py .. train_{N-1}.py` per the contract above.
-4. **Launch the batch**: `{{run_command}}` (redirect everything; do NOT use `tee`).
-5. **Read the result**: `tail results.tsv` and `git log --oneline`. For a quick
-   look, read the `# [stats]` header of each variant's `run_dynamics.csv`. For
-   deeper questions (loss spikes, grad instability, val/train divergence, plateau,
-   per-entity convergence), load the full series via `load_run_dynamics` or dispatch
-   the `dynamics-analyst` sub-agent on-demand with the variant's path and your
-   specific question.
-6. **Keep/discard is already done** — the launcher committed the winner if it beat
-   the running best. You decide *what to try next*. Go to 1 with a new batch.
+The orchestrator never reads a log file, writes a variant, or touches a dynamics
+CSV directly — that is the batch subagent's job (see **Batch subagent contract**
+above). The orchestrator accumulates only compact summaries.
 
-A variant crash is recorded as `status=crash` with metric `nan` and never beats the
-running best; the dynamics `# [meta]` header carries `crashed=true` and partial
-series survive (written from a `finally` block). Inspect the tail of the variant's
-`run.log` for the stack trace, then iterate.
+1. **Form a hypothesis** from your accumulated compact summaries and the
+   `findings.md` you read once at setup. Make the N variants span the hypothesis
+   (a ladder over one knob, or N distinct ideas).
+2. **Dispatch the batch subagent** via the Agent tool using the briefing in
+   **Batch subagent contract**. Fill `{{N}}`, current best metric + commit, the
+   hypothesis, and the variant descriptions.
+3. **Receive the compact summary.** Keep/discard already happened inside the
+   subagent's run — the launcher committed the winner if it beat the running best.
+   Read the summary's `winner`/`delta`/`status` and `dynamics` lines.
+4. **Decide what to try next** from the summary alone. Go to 1 with a new batch.
+
+A `status: none` result (no variant beat the running best) is data, not a failure
+— form a new hypothesis and continue. A `status: crash` variant scored `nan` and
+never beats the best; the subagent's `dynamics` line carries the failure mode, and
+the subagent already inspected the `run.log` tail if it needed the stack trace.
 
 ## NEVER STOP
 
 Once the loop has begun (after setup), do **not** pause to ask the human whether to
-continue. The human may be asleep and expects you to keep working *indefinitely*
-until manually stopped. With N parallel slots and ~{{budget_min}} min/batch, an
-overnight session yields a large stack of results to wake up to.
+continue between batches. The human may be asleep and expects you to keep
+dispatching batch subagents *indefinitely* until manually stopped. With N parallel
+slots and ~{{budget_min}} min/batch, an overnight session yields a large stack of
+results to wake up to.
 
-**When you do stop** (the human halts you), before signing off **update
-`findings.md`** with everything net-new from this session — confirmed wins,
-surprising negatives, fresh noise-floor evidence, new open ideas, and the current
-best (metric + commit). Commit the update. This is how knowledge survives across
-branches and sessions.
+`findings.md` is kept current by the batch subagents — each appends its net-new
+wins, negatives, noise-floor evidence, and open ideas before returning. **When you
+do stop** (the human halts you), verify the last batch subagent reported
+`findings_appended: yes`; if a batch was interrupted before it could append, write
+the missing findings yourself from that batch's compact summary and commit. This is
+how knowledge survives across branches and sessions.
