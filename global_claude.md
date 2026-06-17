@@ -24,8 +24,9 @@ prototype. There should be one — and preferably only one — obvious way to do
   don't filter RNA-seq at `TPM >= 1` by convention; pick a threshold the count
   distribution justifies.
 - **Don't reinvent wheels** — generic/familiar/foundational? A package likely exists.
-- **Easy perf wins in numerical code** — Python loops over arrays are a code smell;
-  vectorized NumPy first, Numba when that's not enough, Rust/PyO3 for hot paths.
+- **Easy perf wins in numerical/tabular code** — Python loops over arrays or rows are
+  a code smell; reach for vectorized NumPy or Polars expressions first (whichever fits
+  the data), Numba when that's not enough, Rust/PyO3 for hot paths.
 - **DRY & YAGNI.**
 
 ## Tooling
