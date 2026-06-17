@@ -21,7 +21,7 @@ Ask the user the target journal/format (e.g. Nature/Science/Cell biological arti
 ## Multi-pass loop (per block of ~3–8 bullets)
 1. **Implement** — write the bullets for the current section block.
 2. **Story review** — consistent with `story.md`'s thesis/beats? Are non-result (background/motivation) bullets backed by literature?
-3. **Technical review** — is each result bullet backed by a named repo artifact (script/result CSV/plot/notebook)? Is every "magic number" (e.g. an RNA-seq count threshold, an x-fold ratio) backed by a principled source — an in-repo empirical result or a citation? Add the pointer inline.
+3. **Technical review** — is each result bullet backed by a named repo artifact (script/result CSV/plot/notebook)? Is every "magic number" (e.g. an RNA-seq count threshold, an x-fold ratio) backed by a principled source — an in-repo empirical result or a citation? Add the pointer inline. Also name the figure panel each result bullet maps to (e.g. `Fig. 2C`) so Stage 3 can attach the callout without inventing one.
 4. **Citation web-check** — for each new citation, dispatch a subagent (parallelize with `superpowers:dispatching-parallel-agents`) to verify via web: (a) does the paper exist (authors, venue, year)? (b) does its content support the specific claim? Log every verdict to `references.md`.
 
 ## Final review (whole outline)

@@ -16,7 +16,7 @@ Default style: `styles/dlaub-style.md` (this skill's directory). If multiple sty
 
 ## Multi-pass loop (per section)
 1. **Write** prose for the section from its `outline.md` bullets, applying the style guide.
-2. **Style review** — check the draft against the style guide's checklist (for dlaub-style: claim-first; ranges as "up to N×" tied to dataset+resources; every Results sentence ends in a bold figure callout; no non-forward-looking hedging; abbreviations defined once).
+2. **Style review** — check the draft against the *selected* guide's own checklist (e.g. dlaub-style's "Quick checklist before finishing a paragraph"). Apply the loaded guide's rules rather than a hardcoded copy, so this step stays correct when the guide evolves or a different style is chosen.
 3. **Fidelity review** — every claim still traces to an `outline.md` bullet and its backing pointer/`references.md` entry. No new unbacked claims, no dropped figure callouts, no altered numbers.
 4. Next section.
 
