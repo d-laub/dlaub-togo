@@ -11,9 +11,17 @@ Distilled from `manuscript.md` (published GenVarLoader paper) + `supplement.md` 
 Apply when drafting Background/Results/Conclusions prose and Methods.
 
 ## Core voice
-- **Claim-first.** Lead each paragraph and most sentences with the finding or point; follow with evidence. Not "To test X, we did Y, and saw Z" — instead "Z (we did Y to test X)".
-- **Declarative, active, low-hedging.** "We developed", "GVL achieves", "we benchmarked". Reserve hedges ("should", "may", "can be pursued") for genuinely forward-looking/speculative claims only.
+- **Claim-first.** Lead each paragraph and most sentences with the finding, then give the evidence. Write "Z (we did Y to test X)" in place of "To test X, we did Y, and saw Z".
+- **Declarative, active, low-hedging.** "We developed", "GVL achieves", "we benchmarked". Reserve hedges ("should", "may", "can be pursued") for genuinely forward-looking or speculative claims only.
 - **Compact.** No throat-clearing ("It is important to note", "In order to"). Cut filler.
+
+## Punctuation and anti-LLM-isms
+Write scientific prose, not chatbot prose. These patterns read as machine-generated and do not belong in a manuscript.
+- **No em-dashes (—).** Split the sentence in two, or use a comma. En-dashes in numeric ranges ("190–450x", "2–16 kbp") are correct typography and encouraged.
+- **No antithesis tic.** Avoid "not X, but Y", "it's not X, it's Y", and "rather than just X, Y". State the claim directly and let the contrast stand on its own.
+- **No corporate or marketing diction.** Avoid leverage, robust, seamless, powerful, cutting-edge, delve, showcase, underscore, and "highlight" or "enable" as vague verbs of emphasis. Name the actual mechanism.
+- **No colloquialisms or idioms.** "apples-to-apples", "under the hood", "out of the box", "heavy lifting", "game-changer", "best of both worlds" have no place in a manuscript. Use literal technical phrasing, for example "matched comparison" or a plain description of the controls.
+- **One idea per sentence, plain punctuation.** Do not chain clauses with semicolons or stack multiple colons. Prefer short declarative sentences ended by periods. Use at most one colon per sentence, and only to introduce a list or a definition.
 
 ## Quantification (the signature tell)
 - Report headline results as a **range with "up to N×"**: "up to 1,000 times faster", "300–1,000x speed-up", "190–450x", "over 2,000-fold reduction".
@@ -40,3 +48,6 @@ Apply when drafting Background/Results/Conclusions prose and Methods.
 - [ ] Does every Results sentence end in a bold figure callout?
 - [ ] Any hedging that isn't forward-looking? Cut it.
 - [ ] First use of each abbreviation defined?
+- [ ] Any em-dashes? Replace with a period or comma.
+- [ ] Any "not X, but Y" antithesis, corporate diction, or colloquialism? Rewrite literally.
+- [ ] Any semicolon or second colon joining clauses? Split into separate sentences.
