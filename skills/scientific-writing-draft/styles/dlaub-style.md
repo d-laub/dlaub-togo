@@ -29,8 +29,9 @@ Write scientific prose, not chatbot prose. These patterns read as machine-genera
 - Use concrete cost/scale framing where it lands: "1.97 petabytes", "$50,000 per month".
 
 ## Figure discipline (Results)
-- **Every result claim ends in a bold figure callout**: `(**Fig. 2C**)`, `(**Fig. 2A**)`, `(**Supp. Fig. 1A**)`.
-- One claim → one figure panel. If a claim has no figure, it is probably not a Results claim.
+- **One bold callout per figure block, on the first sentence about that panel**: `(**Fig. 2C**)`, `(**Fig. 2A**)`, `(**Supp. Fig. 1A**)`. When a run of consecutive sentences all concern the same panel, cite it once in the first of them. Do not repeat the callout on every sentence in the block.
+- Open a new callout when the panel changes, or after an intervening sentence about a different figure.
+- One figure block → one figure panel. If a block of Results prose maps to no figure, it is probably not a Results claim.
 
 ## Background
 - Citation-dense: ≈one citation per factual claim.
@@ -45,7 +46,7 @@ Write scientific prose, not chatbot prose. These patterns read as machine-genera
 ## Quick checklist before finishing a paragraph
 - [ ] Does it lead with the claim?
 - [ ] Is every headline number a range tied to a dataset + resource budget?
-- [ ] Does every Results sentence end in a bold figure callout?
+- [ ] Does each run of same-panel Results sentences carry exactly one bold callout, on its first sentence (not repeated)?
 - [ ] Any hedging that isn't forward-looking? Cut it.
 - [ ] First use of each abbreviation defined?
 - [ ] Any em-dashes? Replace with a period or comma.
