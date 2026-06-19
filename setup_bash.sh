@@ -13,6 +13,9 @@ export PATH="${HOME}/.pixi/bin:${PATH}"
 pixi g i ripgrep bat glow-md sd zoxide rnr fd-find exa prek git gh less zellij dvc rclone awscli uv wandb dust nodejs commitizen ruff
 pixi g a -e dvc dvc-s3
 
+# fresh TUI editor
+curl https://raw.githubusercontent.com/sinelaw/fresh/refs/heads/master/scripts/install.sh | sh
+
 # rust (-y so it works in non-TTY contexts like docker build)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export PATH="${HOME}/.cargo/bin:${PATH}"
