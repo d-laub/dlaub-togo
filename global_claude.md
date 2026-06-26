@@ -1,5 +1,6 @@
 <!-- BEGIN dlaub-togo:global_claude.md -->
 When using superpowers:subagent-driven-development, always use Sonnet for implementation tasks.
+When starting worktrees, always put them in .claude/worktrees under the git repo root.
 
 # Coding principles
 
