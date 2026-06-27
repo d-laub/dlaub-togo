@@ -1,6 +1,7 @@
 <!-- BEGIN dlaub-togo:global_claude.md -->
 When using superpowers:subagent-driven-development, always use Sonnet for implementation tasks.
 When starting worktrees, always put them in .claude/worktrees under the git repo root.
+When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are installed before committing or pushing.
 
 # Coding principles
 
