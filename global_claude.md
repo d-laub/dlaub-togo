@@ -1,5 +1,6 @@
 <!-- BEGIN dlaub-togo:global_claude.md -->
-When using superpowers:brainstorming, only present options/questions when there is no clear recommended option. If you are confident, simply skip asking clarifying questions and proposing multiple approaches and proceed directly to presenting a design.
+When using superpowers:brainstorming, only present options/questions when there is no clear recommended option. If you are confident, skip asking clarifying questions and proposing multiple approaches and proceed directly to presenting a design.
+When using superpowers:writing-plans, identify meaningfully sized tasks that can be implemented in parallel. Direct implementer to use dispatching-parallel-agents with subagent-driven-development for execution.
 When using superpowers:subagent-driven-development, always use Sonnet or weaker models for implementation, except for second passes/fixes where implementer critically failed.
 When starting worktrees, always put them in .claude/worktrees under the git repo root.
 When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are installed before committing or pushing.
