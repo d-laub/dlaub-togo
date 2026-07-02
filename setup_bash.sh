@@ -47,11 +47,11 @@ rtk init --global
 claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install superpowers@claude-plugins-official
 
-## custom statusline
+## custom statusline + default UI/permission settings (auto mode, fullscreen)
 mkdir -p "${HOME}/.claude"
 cp statusline-command.sh "${HOME}/.claude/statusline-command.sh"
 chmod +x "${HOME}/.claude/statusline-command.sh"
-python3 -c "import json, pathlib; p = pathlib.Path.home() / '.claude' / 'settings.json'; s = json.loads(p.read_text()) if p.exists() else {}; s['statusLine'] = {'type': 'command', 'command': 'bash ' + str(pathlib.Path.home() / '.claude' / 'statusline-command.sh')}; p.write_text(json.dumps(s, indent=2))"
+python3 -c "import json, pathlib; p = pathlib.Path.home() / '.claude' / 'settings.json'; s = json.loads(p.read_text()) if p.exists() else {}; s['statusLine'] = {'type': 'command', 'command': 'bash ' + str(pathlib.Path.home() / '.claude' / 'statusline-command.sh')}; s['tui'] = 'fullscreen'; s.setdefault('permissions', {})['defaultMode'] = 'auto'; p.write_text(json.dumps(s, indent=2))"
 
 ## tilth
 cargo binstall -y tilth
