@@ -7,8 +7,10 @@ When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are 
 
 # Coding principles
 
-Defaults for real work; relax for one-off/throwaway scripts — don't gold-plate a
-prototype. There should be one — and preferably only one — obvious way to do it.
+- Defaults for real work; relax for one-off/throwaway scripts — don't gold-plate a
+  prototype.
+- There should be one — and preferably only one — obvious way to do it.
+- Opportunistic refactoring aka the "Boy Scout Rule". Leave codebases better than you found them. Goes without saying for in-scope work, but true for out-of-scope work too. Include small, safe improvements even if they are otherwise out-of-scope. If a larger issue is apparent but out-of-scope, open a GitHub issue.
 
 ## Types
 - **Make invalid states unrepresentable** — encode constraints in types over
