@@ -34,13 +34,7 @@ git config --global pull.rebase true
 curl -fsSL https://claude.ai/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 # LLM global instructions: idempotently sync global_claude.md into ~/.claude/CLAUDE.md
-CLAUDE_MD="${HOME}/.claude/CLAUDE.md"
-mkdir -p "${HOME}/.claude"
-touch "${CLAUDE_MD}"
-# strip any previously-synced block (inclusive of markers), then append the current one
-awk '/<!-- BEGIN dlaub-togo:global_claude.md -->/{skip=1} !skip; /<!-- END dlaub-togo:global_claude.md -->/{skip=0}' "${CLAUDE_MD}" > "${CLAUDE_MD}.tmp"
-cat global_claude.md >> "${CLAUDE_MD}.tmp"
-mv "${CLAUDE_MD}.tmp" "${CLAUDE_MD}"
+bash update_claude.sh
 rtk init --global
 
 ## official
