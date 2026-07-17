@@ -16,12 +16,20 @@ Why split them: during a long drafting conversation the style guide drifts out o
 
 **Every sentence traces to an outline bullet — drafting does not introduce new claims.**
 
+## Method backbone — Steps 13–15
+Drafting is Steps 13–15 of the fifteen steps: turn each planned paragraph (its Step-11 purpose statement) into one paragraph of three parts (detail: `scientific-writing/fifteen-steps.md`):
+- **Topic sentence (Step 13).** Often the paragraph's purpose statement itself; or a question, a turning point ("Having established X, we turn to Y"), a complication ("…but it fails to account for…"), or a development ("This can be made concrete with a model"). If the paragraph doesn't support the paper's main point, rewrite or cut it.
+- **Supporting sentences (Step 15).** Typically **3–6**. For Methods/Results/Discussion responses, lift them from the outline's method/result/response lists. Equations, algorithms, and code count as supporting sentences. **Strike any sentence that doesn't advance the paragraph's purpose.**
+- **Concluding sentence (Step 14).** Closes the theme the topic sentence opened (a declaration → develops/summarizes it; a question → answers it) and segues to the next paragraph in logic if not syntax. If the topic and concluding sentences are disconnected, rewrite both.
+
+This is the *phrasing* stage; the thinking is already fixed in the outline. Style polish is deferred entirely to Phase 2.
+
 ## Load context first
 Read: `story.md`, `outline.md`, `references.md`, and the selected style guide.
 Default style: `styles/dlaub-style.md` (this skill's directory). If multiple styles exist in `styles/`, ask the user which to use. Record the chosen guide's path — Phase 2 needs it.
 
 ## Phase 1 — Draft (per section)
-1. **Write** prose for the section from its `outline.md` bullets, in the voice of the selected style guide.
+1. **Write** prose for the section from its `outline.md` bullets, one paragraph per Step-11 purpose statement using the topic→supporting→concluding contract above, in the voice of the selected style guide.
 2. **Fidelity review** — every claim still traces to an `outline.md` bullet and its backing pointer/`references.md` entry. No new unbacked claims, no dropped figure callouts, no altered numbers.
 3. Next section.
 

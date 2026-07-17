@@ -12,6 +12,11 @@ A research repo accumulates parallel and abandoned experiments. Before any outli
 
 **Do not write the story from your own assumptions. Map the repo, then converge with the user.**
 
+## Method backbone — Steps 1–2
+This stage is Steps 1–2 of the fifteen steps (detail: `scientific-writing/fifteen-steps.md`):
+- **Step 1 — main point.** The thesis is *one short declarative sentence* (subject + verb) that scopes the phenomenon and gives focus. Every later paragraph must illuminate it. It need not become the final title.
+- **Step 2 — narrative arc.** The arc answers *what did we want to learn, why, what did we do, what do we know now*, and follows the key transitions (question→answer, theory→evidence, data→interpretation). **Prefer a two-part structure** — the most memorable and publishable shape. Confirm which two-part scheme fits when you converge with the user (e.g. experiment 1 + experiment 2; simple model + complicated model; experiment + model to explain it; model + experiment to test it; observed pattern + model to explain it).
+
 ## Process
 
 1. **Map the research cloud.** Dispatch `Explore` subagents (read-only) to inventory:
@@ -30,6 +35,7 @@ slug: <kebab-case-slug>
 <one or two sentences — the single claim the paper makes>
 
 ## Narrative arc (linear)
+Two-part scheme: <which Step-2 scheme, e.g. "experiment + model to explain it">
 1. <beat> 2. <beat> 3. <beat> …  (the logical order the paper will argue in)
 
 ## Beat → artifacts
