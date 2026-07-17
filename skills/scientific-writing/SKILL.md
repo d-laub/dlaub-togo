@@ -10,6 +10,17 @@ metadata:
 ## Overview
 A three-stage pipeline from a code+results repo to a manuscript draft. Each stage owns a skill and a durable artifact under `docs/writing/<story-slug>/` in the consuming repo. This skill routes to the right stage and resumes from whatever artifacts already exist.
 
+## Method backbone — the fifteen steps
+The pipeline operationalizes Drake & Han's *"How to write a scientific paper in fifteen steps"* (PLOS Comput Biol, 2025). Its core discipline: **finish the thinking before the phrasing, and write only after the research is done.** Full detail — every step, with the caption/CARS/connector-test specifics each stage calls on — is in `scientific-writing/fifteen-steps.md`. Each stage owns a contiguous block:
+
+| Steps | Stage | Delivers |
+|------|-------|----------|
+| 1–2 | Story | main point + two-part narrative arc |
+| 3–12 | Outline | method/result/finding lists → CARS intro, findings + problem/response discussion, closing thesis, per-paragraph purpose statements, figures |
+| 13–15 | Draft | topic / supporting / concluding sentences |
+
+Cross-cutting, and true of *this* agent too: **generative AI is a Steps-13–15 tool (phrasing), not a Steps-1–12 tool (thinking).** Do the intellectual work of shaping each stage's artifact before smoothing prose; never let fluency stand in for a claim you haven't backed.
+
 ## Stages
 | Stage | Skill | Reads | Writes |
 |------|-------|-------|--------|
