@@ -20,7 +20,16 @@ BAR="${FILL// /█}${PAD// /░}"
 MINS=$((DURATION_MS / 60000)); SECS=$(((DURATION_MS % 60000) / 1000))
 
 BRANCH=""
-git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
+if jj root --ignore-working-copy > /dev/null 2>&1; then
+  # jj takes priority: colocated repos also have .git. --ignore-working-copy
+  # keeps the frequent statusline render read-only (no snapshot/mutation).
+  # Show the nearest ancestor bookmark (git-branch analog), else short change id.
+  NAME=$(jj log --no-graph --ignore-working-copy -r 'heads(::@ & bookmarks())' -T bookmarks 2>/dev/null | head -1)
+  [ -z "$NAME" ] && NAME=$(jj log --no-graph --ignore-working-copy -r @ -T 'change_id.shortest(8)' 2>/dev/null)
+  BRANCH=" | 🌿 $NAME"
+elif git rev-parse --git-dir > /dev/null 2>&1; then
+  BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
+fi
 
 echo -e "${CYAN}[$MODEL]${RESET} 📁 ${DIR##*/}$BRANCH"
 echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ⏱️ ${MINS}m ${SECS}s"
