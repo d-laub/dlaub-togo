@@ -20,14 +20,26 @@ BAR="${FILL// /█}${PAD// /░}"
 MINS=$((DURATION_MS / 60000)); SECS=$(((DURATION_MS % 60000) / 1000))
 
 BRANCH=""
-if jj root --ignore-working-copy > /dev/null 2>&1; then
-  # jj takes priority: colocated repos also have .git. --ignore-working-copy
-  # keeps the frequent statusline render read-only (no snapshot/mutation).
-  # Show the nearest ancestor bookmark (git-branch analog), else short change id.
-  NAME=$(jj log --no-graph --ignore-working-copy -r 'heads(::@ & bookmarks())' -T bookmarks 2>/dev/null | head -1)
-  [ -z "$NAME" ] && NAME=$(jj log --no-graph --ignore-working-copy -r @ -T 'change_id.shortest(8)' 2>/dev/null)
-  BRANCH=" | 🌿 $NAME"
-elif git rev-parse --git-dir > /dev/null 2>&1; then
+GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
+if [ -n "$GIT_DIR" ] && [[ "$GIT_DIR" == */worktrees/* ]]; then
+  # Linked git worktree: its branch is authoritative. jj would resolve up to the
+  # parent (colocated) repo and print stale, unrelated bookmarks, so skip jj here.
+  BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
+elif jj root --ignore-working-copy > /dev/null 2>&1; then
+  # jj repo (colocated repos also have .git, so jj is checked before plain git).
+  # --ignore-working-copy keeps the frequent statusline render read-only (no
+  # snapshot/mutation). 🥢 distinguishes jj from git's 🌿. local_bookmarks drops
+  # remote-tracking noise (e.g. main@origin). Prefer a local bookmark on @; else
+  # the nearest ancestor bookmark plus short change id (bookmark@changeid); else
+  # just the change id.
+  NAME=$(jj log --no-graph --ignore-working-copy -r @ -T local_bookmarks 2>/dev/null | head -1)
+  if [ -z "$NAME" ]; then
+    CID=$(jj log --no-graph --ignore-working-copy -r @ -T 'change_id.shortest(8)' 2>/dev/null)
+    NEAR=$(jj log --no-graph --ignore-working-copy -r 'heads(::@ & bookmarks())' -T local_bookmarks 2>/dev/null | head -1)
+    if [ -n "$NEAR" ]; then NAME="$NEAR@$CID"; else NAME=$CID; fi
+  fi
+  BRANCH=" | 🥢 $NAME"
+elif [ -n "$GIT_DIR" ]; then
   BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
 fi
 
