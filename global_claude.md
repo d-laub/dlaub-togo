@@ -39,6 +39,10 @@ When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are 
 - **`pixi`** for envs/deps (see the `pixi` skill); **`uv`** for one-off scripts with
   niche deps (avoid sprawling to >6 pixi envs); **`dvc`** for data.
 
+## Bash tools
+- **`fd`** instead of `find` for locating files.
+- **`rg`** (ripgrep) instead of `grep` for searching file contents.
+
 # Maintained packages
 I maintain **seqpro**, **genoray**, **genvarloader**, **genvarformer** — treat bugs
 and features in these as first-party, not external deps.
