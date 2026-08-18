@@ -58,6 +58,9 @@ npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code
 ## runpod
 npx -y skills add runpod/skills --agent claude-code --global -y
 
+## gh
+npx -y skills add github/gh-stack --agent claude-code --global -y
+
 ## custom libs
 npx -y skills add ML4GLand/SeqPro --skill seqpro --agent claude-code --global -y
 npx -y skills add d-laub/genoray --agent claude-code --global -y
