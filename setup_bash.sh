@@ -30,19 +30,15 @@ git config --global user.name "David Laub"
 git config --global pull.rebase true
 
 # LLM
-## rtk
-curl -fsSL https://claude.ai/install.sh | bash
-curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-# LLM global instructions: idempotently sync global_claude.md into ~/.claude/CLAUDE.md
+mkdir -p "${HOME}/.claude"
 bash update_claude.sh
-rtk init --global
-
-## official
 claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install superpowers@claude-plugins-official
+claude plugin marketplace add ayghri/i-have-adhd
+claude plugin install i-have-adhd@i-have-adhd
+touch "${HOME}/.claude/.i-have-adhd-always"
 
 ## custom statusline + default UI/permission settings (auto mode, fullscreen)
-mkdir -p "${HOME}/.claude"
 cp statusline-command.sh "${HOME}/.claude/statusline-command.sh"
 chmod +x "${HOME}/.claude/statusline-command.sh"
 python3 -c "import json, pathlib; p = pathlib.Path.home() / '.claude' / 'settings.json'; s = json.loads(p.read_text()) if p.exists() else {}; s['statusLine'] = {'type': 'command', 'command': 'bash ' + str(pathlib.Path.home() / '.claude' / 'statusline-command.sh')}; s['tui'] = 'fullscreen'; s.setdefault('permissions', {})['defaultMode'] = 'auto'; p.write_text(json.dumps(s, indent=2))"
