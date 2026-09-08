@@ -54,6 +54,11 @@ git config --global user.name "David Laub"
 git config --global pull.rebase true
 
 # LLM
+# Claude Code itself. MUST come before the `claude plugin` calls below; it was
+# lost in c9e51f3, which removed the `## rtk` block this line was sitting
+# under, leaving the plugin calls with no `claude` on PATH. Installs into
+# ~/.local/bin, already on PATH from the export at the top of this script.
+curl -fsSL https://claude.ai/install.sh | bash
 mkdir -p "${HOME}/.claude"
 bash update_claude.sh
 claude plugin marketplace add anthropics/claude-plugins-official
