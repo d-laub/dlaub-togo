@@ -1,0 +1,37 @@
+name: Rebuild runpod-image
+
+# This repo is installed into ghcr.io/d-laub/runpod-image at Docker build time,
+# so a change here has to republish those images. This is the instant path;
+# runpod-image also polls on a daily schedule, which is the fallback whenever
+# this workflow can't fire.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      # GITHUB_TOKEN cannot dispatch across repositories, so this needs a PAT
+      # with `repo` scope on d-laub/runpod-image, stored here as the
+      # RUNPOD_IMAGE_DISPATCH_TOKEN secret. The `secrets` context is not
+      # available in `if:`, hence the env-var indirection — without the secret
+      # this is a clean no-op rather than a red X on every push.
+      #
+      # client_payload is informational only: runpod-image re-resolves this
+      # repo's HEAD itself, so it always installs the true current tip even if
+      # several pushes coalesce into one build.
+      - name: Trigger runpod-image build
+        env:
+          GH_TOKEN: ${{ secrets.RUNPOD_IMAGE_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "RUNPOD_IMAGE_DISPATCH_TOKEN is not set — skipping dispatch."
+            echo "runpod-image will pick this commit up on its daily schedule."
+            exit 0
+          fi
+          printf '{"event_type":"dlaub-togo-updated","client_payload":{"sha":"%s"}}' \
+            "$GITHUB_SHA" \
+            | gh api repos/d-laub/runpod-image/dispatches --input -
+          echo "Dispatched dlaub-togo-updated to d-laub/runpod-image."
