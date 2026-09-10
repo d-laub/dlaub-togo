@@ -1,6 +1,6 @@
 ---
 name: public-writing
-description: Use when writing David Laub's public-facing, non-manuscript prose. Covers the LinkedIn About section, technical blog posts announcing GenVarLoader or GenVarFormer, project READMEs, and release notes. Sets the voice, the per-genre specs, and the mechanical guardrails against LLM writing tells.
+description: Use when writing David Laub's public-facing, non-manuscript prose. Covers the LinkedIn About section, technical blog posts announcing a tool or a result, project READMEs, and release notes. Sets the voice, the per-genre specs, and the mechanical guardrails against LLM writing tells.
 metadata:
   type: technique
 ---
@@ -191,20 +191,24 @@ Hard rules for the bio:
 
 Target 1,800 to 2,500 words with three to five figures.
 
-The audience is three readers at once. An ML engineer who does not know genomics.
-A genomicist who does not know deep learning. A hiring manager or collaborator
-skimming for whether this is real. Write for the first two and the third is
-handled.
+A tool announcement has three readers at once, and naming them before drafting
+settles most of the wording. There is a practitioner from the field the tool
+serves, who knows the problem and not the method, and a practitioner from the
+field the method comes from, who knows the method and not the problem. The third
+is a hiring manager or a prospective collaborator skimming for whether the work
+is real, and writing for the first two handles the third.
 
 **Treat the word count as a ceiling.** Personal blog tool announcements in the
 reference set run from 450 to 2,900 words, and the 450 word one does the whole
-job. Two tools in one post is already ambitious. Anything past 2,500 words and
-the ML reader leaves before the model section.
+job. Announcing more than one tool in a single post is already ambitious, and
+anything past 2,500 words loses the reader furthest from your field before the
+section that carries the result.
 
 **Opening.** Follow the DeepVariant pattern. Two or three paragraphs stating the
 problem in numbers, then the announcement in the fourth. Never say the problem is
-hard. State that a personalized FASTA for one million All of Us genomes takes
-1.97 petabytes and over $50,000 a month, and let the reader conclude it.
+hard. Give the quantity that makes it hard and let the reader draw the
+conclusion, the way a storage figure of 1.97 petabytes and a bill over $50,000 a
+month settle the question without the word "expensive" appearing.
 
 Openings to avoid, all drawn from real posts: a Human Genome Project preamble, a
 definition both audiences already have,
@@ -213,10 +217,12 @@ such as "DNA is the blueprint of life", and any first sentence containing "we ar
 proud to".
 <!-- prose-check:on -->
 
-The strongest available motivation is not yours to assert, because DeepMind
-already wrote it. AlphaGenome's own limitations section says "We haven't designed
-or validated AlphaGenome for personal genome prediction, a known challenge for AI
-models." Quote it.
+The strongest available motivation is often not yours to assert, because someone
+with more standing has already written it down. When the dominant tool in a field
+disclaims the problem your work takes on, quote the disclaimer rather than
+asserting the gap yourself. AlphaGenome's limitations section saying "We haven't
+designed or validated AlphaGenome for personal genome prediction, a known
+challenge for AI models" is the pattern to look for.
 
 **Section skeleton.** Practitioner voice, infrastructure evidence sections,
 institutional limitations section. Roughly:
@@ -250,12 +256,11 @@ number appears.
 One comparison table across competing tools is the single most useful artifact
 for a reader deciding whether to switch.
 
-**Limitations.** Mandatory, as its own section, and specific. The cis null is the
-honest centrepiece of this work rather than a disappointment to bury: held-out
-per-gene r of -0.017 in myeloma and 0.042 in breast cancer, under controls,
-replicating an association result out of sample. State the unexplained variance,
-84.3% in myeloma and 74.9% in breast cancer, and bound it with what is known
-about the terms not measured.
+**Limitations.** Mandatory, as its own section, and specific. A null result the
+work was designed to test belongs here as the centrepiece rather than buried, and
+it is reported with the effect size, the controls it ran under, and whether it
+replicates out of sample. State the unexplained variance as a number, and bound
+it with what is known about the terms the study did not measure.
 
 **Close.** A named Resources list. Manuscript with DOI, code, docs, install line.
 Do not close on a hiring pitch or a demo signup, which is the worst ending in the
@@ -321,8 +326,9 @@ real fact about a tool, and it is not a performance result.
 
 ## Where the facts live
 
-`~/projects/thesis/dissertation/defense/story.md` holds the headline numbers for
-both tools in one place, already checked, with the dataset and resource budget
-attached to each. Use it as the source of truth rather than rederiving numbers
-from the analysis repos, and follow its pointers into `gvf-brca`,
-`gvf-germ-som` and `gvf-geuvadis` when a claim needs more than the headline.
+Before drafting, collect every headline number into one file, each with its
+dataset name and its resource budget attached, and check them once against the
+analysis that produced them. Draft from that file rather than rederiving figures
+mid-sentence, because a number that shifts during drafting is how a wrong figure
+reaches a public post. Keep a pointer from each number back to its source, so a
+claim that needs more than the headline can be followed up without a search.

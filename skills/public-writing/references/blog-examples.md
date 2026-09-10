@@ -147,9 +147,9 @@ AlphaGenome, https://deepmind.google/discover/blog/alphagenome-ai-for-better-und
 > known challenge for AI models. Instead, we focused more on characterising the
 > performance on individual genetic variants."
 
-This one line is the strongest available motivation for GenVarFormer. The
-flagship model in the field disclaims the exact problem GVF takes on. Quote it
-rather than asserting the gap.
+A flagship model disclaiming the exact problem a smaller tool takes on is the
+strongest motivation that tool can cite. Quote the disclaimer rather than
+asserting the gap.
 
 AlphaGenome's full limitations section is the best honest-caveat writing found in
 any corporate post:
@@ -248,8 +248,8 @@ around what the reader gets rather than what the author implemented.
 > Getting Started / What's Next?
 
 Earthmover's Zarr post uses "Use Zarr if" and "Zarr might not be ideal if" as
-literal headings, which is the cleanest scoping device found. It adapts directly
-to "Use GenVarLoader if".
+literal headings, which is the cleanest scoping device found. It adapts to any
+tool by substituting the name.
 
 Simon Willison names a section for the design decision most likely to be
 challenged, "Why an immutable API?".
