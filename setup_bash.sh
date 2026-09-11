@@ -67,10 +67,24 @@ claude plugin marketplace add ayghri/i-have-adhd
 claude plugin install i-have-adhd@i-have-adhd
 touch "${HOME}/.claude/.i-have-adhd-always"
 
-## custom statusline + default UI/permission settings (auto mode, fullscreen)
+## custom statusline + default UI/permission settings (auto mode, fullscreen, 250k autocompact)
 cp statusline-command.sh "${HOME}/.claude/statusline-command.sh"
 chmod +x "${HOME}/.claude/statusline-command.sh"
-python3 -c "import json, pathlib; p = pathlib.Path.home() / '.claude' / 'settings.json'; s = json.loads(p.read_text()) if p.exists() else {}; s['statusLine'] = {'type': 'command', 'command': 'bash ' + str(pathlib.Path.home() / '.claude' / 'statusline-command.sh')}; s['tui'] = 'fullscreen'; s.setdefault('permissions', {})['defaultMode'] = 'auto'; p.write_text(json.dumps(s, indent=2))"
+python3 - <<'PYEOF'
+import json
+import pathlib
+
+p = pathlib.Path.home() / ".claude" / "settings.json"
+s = json.loads(p.read_text()) if p.exists() else {}
+s["statusLine"] = {
+    "type": "command",
+    "command": "bash " + str(pathlib.Path.home() / ".claude" / "statusline-command.sh"),
+}
+s["tui"] = "fullscreen"
+s["autoCompactWindow"] = 250_000
+s.setdefault("permissions", {})["defaultMode"] = "auto"
+p.write_text(json.dumps(s, indent=2))
+PYEOF
 
 ## tilth
 cargo binstall -y tilth
