@@ -90,6 +90,57 @@ PYEOF
 cargo binstall -y tilth
 tilth install claude-code --edit
 
+## opencode (same skills + plugins as the Claude setup above)
+# Installer defaults to ~/.opencode/bin; that path is added to PATH in the
+# ~/.bashrc block below instead of letting the installer edit shell config.
+curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
+mkdir -p "${HOME}/.config/opencode/plugins" "${HOME}/.config/opencode/vendor"
+# i-have-adhd: opencode plugin vendored from the same repo as the Claude plugin
+if [[ -d "${HOME}/.config/opencode/vendor/i-have-adhd/.git" ]]; then
+  git -C "${HOME}/.config/opencode/vendor/i-have-adhd" pull --ff-only \
+    || echo "WARN: i-have-adhd update skipped (git pull failed)"
+else
+  git clone --depth 1 https://github.com/ayghri/i-have-adhd "${HOME}/.config/opencode/vendor/i-have-adhd"
+fi
+touch "${HOME}/.config/opencode/.i-have-adhd-always"
+# slash-command autocomplete for every discovered skill, plus caveman rules
+cp opencode/plugins/skill-commands.js "${HOME}/.config/opencode/plugins/skill-commands.js"
+cp opencode/caveman.md "${HOME}/.config/opencode/caveman.md"
+mkdir -p "${HOME}/.config/opencode/skills/caveman"
+cp -R opencode/skills/caveman/. "${HOME}/.config/opencode/skills/caveman/"
+# merge runtime config, preserving existing keys (model/provider choices)
+python3 - <<'PYEOF'
+import json
+import pathlib
+
+p = pathlib.Path.home() / ".config" / "opencode" / "opencode.jsonc"
+s = json.loads(p.read_text()) if p.exists() else {}
+for spec in [
+    "superpowers@git+https://github.com/obra/superpowers.git",
+    str(pathlib.Path.home() / ".config/opencode/vendor/i-have-adhd/.opencode/plugins/i-have-adhd.mjs"),
+]:
+    if spec not in s.setdefault("plugin", []):
+        s["plugin"].append(spec)
+caveman_md = str(pathlib.Path.home() / ".config/opencode/caveman.md")
+if caveman_md not in s.setdefault("instructions", []):
+    s["instructions"].append(caveman_md)
+permission = s.setdefault("permission", {})
+permission.setdefault("doom_loop", "allow")
+permission.setdefault("external_directory", "allow")
+# tilth MCP server (set here rather than via `tilth install opencode`, which
+# writes opencode.json that opencode.jsonc would shadow)
+mcp = s.setdefault("mcp", {})
+mcp.setdefault(
+    "tilth",
+    {
+        "type": "local",
+        "command": [str(pathlib.Path.home() / ".cargo/bin/tilth"), "--mcp", "--edit"],
+        "enabled": True,
+    },
+)
+p.write_text(json.dumps(s, indent=2) + "\n")
+PYEOF
+
 ## marimo
 npx -y skills add marimo-team/marimo-pair --agent claude-code --global -y
 npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --global -y
@@ -118,7 +169,7 @@ sd '^OSH_THEME=.*$' 'OSH_THEME="agnoster-multiline"' "${HOME}/.bashrc"
 
 # update ~/.bashrc
 sync_block "${HOME}/.bashrc" bashrc <<'EOF'
-export PATH="${HOME}/.local/bin:${HOME}/.pixi/bin:${HOME}/.cargo/bin:${PATH}"
+export PATH="${HOME}/.opencode/bin:${HOME}/.local/bin:${HOME}/.pixi/bin:${HOME}/.cargo/bin:${PATH}"
 eval "$(zoxide init bash)"
 eval "$(dvc completion -s bash)"
 EOF
