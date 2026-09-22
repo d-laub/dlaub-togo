@@ -142,21 +142,23 @@ p.write_text(json.dumps(s, indent=2) + "\n")
 PYEOF
 
 ## marimo
-npx -y skills add marimo-team/marimo-pair --agent claude-code --global -y
-npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --global -y
+npx -y skills add marimo-team/marimo-pair --agent claude-code --agent opencode --global -y
+npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --agent opencode --global -y
 
 ## runpod
-npx -y skills add runpod/skills --agent claude-code --global -y
+npx -y skills add runpod/skills --agent claude-code --agent opencode --global -y
 
 ## gh
-npx -y skills add github/gh-stack --agent claude-code --global -y
+npx -y skills add github/gh-stack --agent claude-code --agent opencode --global -y
 
 ## custom libs
-npx -y skills add ML4GLand/SeqPro --skill seqpro --agent claude-code --global -y
-npx -y skills add d-laub/genoray --agent claude-code --global -y
-npx -y skills add mcvickerlab/GenVarLoader --agent claude-code --global -y
-npx -y skills add d-laub/xolars --agent claude-code --global -y
-npx -y skills add d-laub/dlaub-togo --agent claude-code --global -y -s '*'
+npx -y skills add ML4GLand/SeqPro --skill seqpro --agent claude-code --agent opencode --global -y
+npx -y skills add d-laub/genoray --agent claude-code --agent opencode --global -y
+npx -y skills add mcvickerlab/GenVarLoader --agent claude-code --agent opencode --global -y
+npx -y skills add d-laub/xolars --agent claude-code --agent opencode --global -y
+npx -y skills add standardmodelbio/lmx --agent claude-code --agent opencode --global -y
+npx -y skills add standardmodelbio/genvarformer --agent claude-code --agent opencode --global -y
+npx -y skills add d-laub/dlaub-togo --agent claude-code --agent opencode --global -y -s '*'
 
 # download and add aliases
 sync_block "${HOME}/.bash_aliases" aliases < aliases.sh
