@@ -146,7 +146,7 @@ npx -y skills add marimo-team/marimo-pair --agent claude-code --agent opencode -
 npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --agent opencode --global -y
 npx -y skills add runpod/skills --agent claude-code --agent opencode --global -y
 npx -y skills add github/gh-stack --agent claude-code --agent opencode --global -y
-npx -y skills add danverbraganza/jujutsu-skill --agent claude-code --agent opencode --global -y
+npx -y skills add netresearch/jujutsu-workflow-skill --agent claude-code --agent opencode --global -y
 
 ## dlaub skills
 npx -y skills add ML4GLand/SeqPro --skill seqpro --agent claude-code --agent opencode --global -y
