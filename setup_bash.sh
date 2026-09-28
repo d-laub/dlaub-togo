@@ -144,9 +144,12 @@ PYEOF
 ## third party skills
 npx -y skills add marimo-team/marimo-pair --agent claude-code --agent opencode --global -y
 npx -y skills add marimo-team/skills --skill marimo-notebook --agent claude-code --agent opencode --global -y
-npx -y skills add runpod/skills --agent claude-code --agent opencode --global -y
 npx -y skills add github/gh-stack --agent claude-code --agent opencode --global -y
 npx -y skills add netresearch/jujutsu-workflow-skill --agent claude-code --agent opencode --global -y
+
+### runpod
+npx -y skills add runpod/runpod-plugins-official --agent claude-code --agent opencode --global -y
+curl -sSL https://cli.runpod.net | bash
 
 ## dlaub skills
 npx -y skills add ML4GLand/SeqPro --skill seqpro --agent claude-code --agent opencode --global -y
