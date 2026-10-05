@@ -30,7 +30,9 @@ export PATH="${HOME}/.local/bin:${PATH}"
 # install global tools
 curl -fsSL https://pixi.sh/install.sh | sh
 export PATH="${HOME}/.pixi/bin:${PATH}"
-pixi g i ripgrep bat glow-md sd zoxide rnr fd-find eza prek git gh less zellij dvc rclone awscli uv wandb dust nodejs commitizen ruff actionlint shellcheck
+pixi g i ripgrep bat glow-md sd zoxide rnr fd-find eza prek git gh less \
+  zellij dvc rclone awscli uv wandb dust nodejs commitizen ruff actionlint \
+  shellcheck jj
 pixi g a -e dvc dvc-s3
 # bring already-present globals up to date when re-run against an existing install
 pixi global update
