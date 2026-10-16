@@ -159,7 +159,7 @@ npx -y skills add d-laub/genoray --agent claude-code --agent opencode --global -
 npx -y skills add mcvickerlab/GenVarLoader --agent claude-code --agent opencode --global -y
 npx -y skills add d-laub/xolars --agent claude-code --agent opencode --global -y
 npx -y skills add standardmodelbio/lmx --agent claude-code --agent opencode --global -y
-npx -y skills add standardmodelbio/genvarformer --agent claude-code --agent opencode --global -y
+npx -y skills add standardmodelbio/calla --agent claude-code --agent opencode --global -y
 npx -y skills add d-laub/dlaub-togo --agent claude-code --agent opencode --global -y -s '*'
 
 # download and add aliases

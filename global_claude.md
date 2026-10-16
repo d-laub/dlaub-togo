@@ -44,6 +44,6 @@ When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are 
 - **`rg`** (ripgrep) instead of `grep` for searching file contents.
 
 # Maintained packages
-I maintain **seqpro**, **genoray**, **genvarloader**, **genvarformer** — treat bugs
+I maintain **seqpro**, **genoray**, **genvarloader**, **calla** — treat bugs
 and features in these as first-party, not external deps.
 <!-- END dlaub-togo:global_claude.md -->
