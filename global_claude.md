@@ -34,6 +34,13 @@ When .pre-commit-config.yaml or prek.toml present, make sure prek git hooks are 
   a code smell; reach for vectorized NumPy or Polars expressions first (whichever fits
   the data), Numba when that's not enough, Rust/PyO3 for hot paths.
 - **DRY & YAGNI.**
+- **No behavior-changing environment variables** — an env var that changes what code
+  computes (feature flags, kernel/backend selection, numerics, defaults) is invisible at
+  the call site and in saved configs, so a run can't be reproduced from its script.
+  Make it an explicit argument or config field that is recorded with the run. Don't
+  add `os.environ` / `getenv` switches. When you find existing ones, replace them.
+  Allowed: things that only locate resources or credentials (cache dirs, tokens,
+  `CUDA_VISIBLE_DEVICES`) and setting third-party env vars at the launch line.
 
 ## Tooling
 - **`pixi`** for envs/deps (see the `pixi` skill); **`uv`** for one-off scripts with
